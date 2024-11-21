@@ -1,15 +1,15 @@
-import express, { Express, Request, Response } from "express";
+import { app } from "./app";
 import dotenv from "dotenv";
+import { connectDB } from "./db";
 
-dotenv.config();
+dotenv.config({ path: "./.env" });
 
-const app: Express = express();
-const port = process.env.PORT || 3000;
+connectDB()
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log(`Server ready on port ${process.env.PORT}`);
+    });
+  })
+  .catch();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + typeScript Server is up and running ");
-});
-
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
-});
+export default app;
