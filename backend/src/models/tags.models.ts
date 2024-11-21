@@ -4,6 +4,7 @@ const tagsSchema = new Schema(
   {
     title: {
       type: String,
+      required: true,
     },
   },
   { timestamps: true }

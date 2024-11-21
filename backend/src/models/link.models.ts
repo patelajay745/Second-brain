@@ -9,6 +9,7 @@ const linkSchema = new Schema(
     userId: {
       type: mongoose.Types.ObjectId,
       ref: "User",
+      required: true,
     },
   },
   { timestamps: true }
