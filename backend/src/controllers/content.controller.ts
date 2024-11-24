@@ -163,3 +163,27 @@ export const getAContent = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, "contents has been fetched", contents));
 });
+
+export const deleteAContent = asyncHandler(async (req, res) => {
+  const contentId = req.params["contentId"];
+  const userId = req.user?._id;
+
+  const content = await Content.findById(contentId);
+
+  if (!content) {
+    throw new ApiError(404, "Content not found");
+  }
+
+  if (content.userId?.toString() !== userId?.toString()) {
+    throw new ApiError(403, "Unauthorized to delete this content");
+  }
+
+  await Content.deleteOne({
+    _id: contentId,
+    userId: userId,
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "contents has been deleted", {}));
+});
