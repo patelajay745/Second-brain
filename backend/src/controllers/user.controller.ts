@@ -2,18 +2,63 @@ import { ApiError } from "../utils/ApiError";
 import { asyncHandler } from "../utils/asyncHandler";
 import { User } from "../models/users.models";
 import { ApiResponse } from "../utils/ApiResponse";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 
 const UserSchemaForZod = z.object({
+  // username: z.string().min(3).max(10),
   username: z.string(),
-  password: z.string().min(6),
+  password: z.string(),
+  // password: z
+  //   .string()
+  //   .min(8)
+  //   .max(20)
+  //   .refine(
+  //     (v) => {
+  //       return /^(?=.*[A-Z]).+$/g.test(v);
+  //     },
+  //     { message: "At least one uppercase expected" }
+  //   )
+  //   .refine(
+  //     (v) => {
+  //       return /^(?=.*[a-z]).+$/g.test(v);
+  //     },
+  //     { message: "At least one uppercase expected" }
+  //   )
+  //   .refine(
+  //     (v) => {
+  //       return /^(?=.*[0-9]).+$/g.test(v);
+  //     },
+  //     { message: "At least one digit expected" }
+  //   )
+  //   .refine(
+  //     (v) => {
+  //       return /^(?=.*[^a-zA-Z0-9]).+$/g.test(v);
+  //     },
+  //     { message: "At least one symbol expected" }
+  //   ),
 });
 
 export const registerUser = asyncHandler(async (req, res) => {
-  UserSchemaForZod.parse(req.body);
+  const zodOutput:
+    | { success: true; data: unknown }
+    | { success: false; error: ZodError } = UserSchemaForZod.safeParse(
+    req.body
+  );
+
+  if (!zodOutput.success) {
+    const errorMessage = zodOutput.error.issues
+      .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+      .join(", ");
+
+    throw new ApiError(411, errorMessage);
+  }
+
   const { username, password } = req.body;
-  if ([username, password].some((field) => field.trim() === "")) {
-    throw new ApiError(401, "username and password are required");
+
+  const existeduser = await User.findOne({ username });
+
+  if (existeduser) {
+    throw new ApiError(403, "user already existes with this username");
   }
 
   const user = await User.create({ username, password });
@@ -32,10 +77,9 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 export const getLogin = asyncHandler(async (req, res) => {
-  UserSchemaForZod.parse(req.body);
   const { username, password } = req.body;
 
-  if ([username, password].some((field) => field.trim() === "")) {
+  if ([username, password].some((field) => !field || field.trim() === "")) {
     throw new ApiError(401, "username and password are required");
   }
 
@@ -46,7 +90,7 @@ export const getLogin = asyncHandler(async (req, res) => {
   console.log(user);
 
   if (!user) {
-    throw new ApiError(401, "user doesn't exist");
+    throw new ApiError(403, "user doesn't exist");
   }
 
   const isPasswordValid = await user.isPasswordCorrect(password);
