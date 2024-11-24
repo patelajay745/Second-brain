@@ -3,6 +3,7 @@ import { Router } from "express";
 import {
   createContent,
   getAllContents,
+  getAContent,
 } from "../controllers/content.controller";
 import { verifyJWT } from "@/middlewares/auth.middleware";
 
@@ -12,7 +13,7 @@ router.use(verifyJWT);
 
 router.post("/", createContent);
 router.get("/", getAllContents);
-router.get("/:contentId");
+router.get("/:contentId", getAContent);
 router.delete("/:contentId");
 
 export default router;

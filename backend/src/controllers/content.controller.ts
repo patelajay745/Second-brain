@@ -92,8 +92,61 @@ export const getAllContents = asyncHandler(async (req, res) => {
           $map: {
             input: "$tags",
             as: "tag",
-            in:"$$tag.title"
-          }
+            in: "$$tag.title",
+          },
+        },
+        link: 1,
+        type: 1,
+        title: 1,
+      },
+    },
+  ]);
+
+  if (!contents) {
+    throw new ApiError(401, "No content found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "contents has been fetched", contents));
+});
+
+export const getAContent = asyncHandler(async (req, res) => {
+  const contentId = req.params["contentId"];
+  console.log(contentId);
+
+  // const contents = await Content.find({ _id: contentId });
+
+  const contents = await Content.aggregate([
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(contentId),
+      },
+    },
+    {
+      $lookup: {
+        from: "tags",
+        localField: "tags",
+        foreignField: "_id",
+        as: "tags",
+        pipeline: [
+          {
+            $project: {
+              title: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        tags: {
+          $map: {
+            input: "$tags",
+            as: "tag",
+            in: "$$tag.title",
+          },
         },
         link: 1,
         type: 1,
