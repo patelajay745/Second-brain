@@ -1,6 +1,9 @@
 import { Router } from "express";
 
-import { createContent } from "../controllers/content.controller";
+import {
+  createContent,
+  getAllContents,
+} from "../controllers/content.controller";
 import { verifyJWT } from "@/middlewares/auth.middleware";
 
 const router = Router();
@@ -8,7 +11,7 @@ const router = Router();
 router.use(verifyJWT);
 
 router.post("/", createContent);
-router.get("/");
+router.get("/", getAllContents);
 router.get("/:contentId");
 router.delete("/:contentId");
 
