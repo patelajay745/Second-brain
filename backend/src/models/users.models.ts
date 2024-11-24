@@ -1,14 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-interface IUser extends Document {
-  username: string;
-  password: string;
-  isPasswordCorrect: (password: string) => Promise<boolean>;
-  generateAccessToken: () => string;
-  generateRefreshToken: () => string;
-}
+import { IUser } from "@/types/user";
 
 const userSchema = new Schema<IUser>(
   {

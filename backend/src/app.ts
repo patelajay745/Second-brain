@@ -25,8 +25,9 @@ app.use(cookieparse());
 
 //routes
 import userRouter from "./routes/user.route";
+import contentRouter from "./routes/content.route";
 
 app.use("/api/v1/user", userRouter);
-
+app.use("/api/v1/content", contentRouter);
 
 export { app };
