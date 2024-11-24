@@ -2,8 +2,15 @@ import { ApiError } from "../utils/ApiError";
 import { asyncHandler } from "../utils/asyncHandler";
 import { User } from "../models/users.models";
 import { ApiResponse } from "../utils/ApiResponse";
+import { z } from "zod";
+
+const UserSchemaForZod = z.object({
+  username: z.string(),
+  password: z.string().min(6),
+});
 
 export const registerUser = asyncHandler(async (req, res) => {
+  UserSchemaForZod.parse(req.body);
   const { username, password } = req.body;
   if ([username, password].some((field) => field.trim() === "")) {
     throw new ApiError(401, "username and password are required");
@@ -15,13 +22,17 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Something went wrong while creating user");
   }
 
-  console.log(new ApiResponse(201, "User has been created", user));
+  const userResponse: { username: string } = {
+    username: user.username,
+  };
+
   return res
     .status(201)
-    .json(new ApiResponse(201, "User has been created", user));
+    .json(new ApiResponse(201, "User has been created", userResponse));
 });
 
 export const getLogin = asyncHandler(async (req, res) => {
+  UserSchemaForZod.parse(req.body);
   const { username, password } = req.body;
 
   if ([username, password].some((field) => field.trim() === "")) {
