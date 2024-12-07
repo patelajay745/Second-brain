@@ -12,7 +12,8 @@ const variantClasses = {
   secondary: "bg-purple-200 text-purple-600",
 };
 
-const defaultStyles = "px-2 py-2 rounded-md font-light flex items-center";
+const defaultStyles =
+  "px-2 py-2 rounded-md font-light flex items-center max-h-12";
 
 export const Button = ({ variant, text, startIcon }: ButtonProps) => {
   return (
