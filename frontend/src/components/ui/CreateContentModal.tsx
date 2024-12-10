@@ -24,8 +24,12 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
 
                 <div>
                   <div className="">
-                    <Input onChange={() => {}} placeHolder="title" />
-                    <Input onChange={() => {}} placeHolder="Link" />
+                    <Input
+                      type="text"
+                      onChange={() => {}}
+                      placeholder="title"
+                    />
+                    <Input type="text" onChange={() => {}} placeholder="Link" />
                   </div>
 
                   <div className="flex justify-center">

@@ -7,6 +7,8 @@ interface ButtonProps {
   startIcon?: ReactElement;
   className?: string;
   onclick?: () => void;
+  loading?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
 const variantClasses = {
@@ -15,7 +17,7 @@ const variantClasses = {
 };
 
 const defaultStyles =
-  "px-2 py-2 rounded-md font-light flex items-center max-h-12";
+  "px-2 py-2 rounded-md font-light flex items-center justify-center max-h-12";
 
 export const Button = ({
   variant,
@@ -23,11 +25,19 @@ export const Button = ({
   startIcon,
   className,
   onclick,
+  loading,
+  type = "button",
 }: ButtonProps) => {
   return (
     <button
+      type={type}
       onClick={onclick}
-      className={clsx(variantClasses[variant], defaultStyles, className)}
+      className={clsx(
+        variantClasses[variant],
+        defaultStyles,
+        loading ? "disabled opacity-30" : "",
+        className
+      )}
     >
       <div className="pr-2">{startIcon}</div>
       {text}
