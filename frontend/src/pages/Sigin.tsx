@@ -1,21 +1,54 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { userDataTypes } from "@/types/user";
+import { loginUser } from "@/api/user";
+import { useNavigate } from "react-router-dom";
 
 export const SignIn: FC = () => {
+  const { register, handleSubmit } = useForm<userDataTypes>();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<userDataTypes> = async (data) => {
+    setLoading(true);
+
+    try {
+      const response = await loginUser(data);
+      if (response.status != 200) {
+        throw new Error("User registration failed: " + response.statusText);
+      }
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="h-screen w-screen bg-gray-200 flex justify-center items-center ">
       <div className="bg-white rounded-xl p-14 shadow-2xl ">
         <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
           Sign In
         </h1>
-        <Input type="text" placeholder="Username" onChange={() => {}} />
-        <Input type="password" placeholder="Password" onChange={() => {}} />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Input type="text" placeholder="Username" {...register("username")} />
+          <Input
+            type="password"
+            placeholder="Password"
+            {...register("password")}
+          />
 
-        <div className="flex   justify-end gap-2 mt-4">
-          <Button text="Clear" variant="secondary" />
-          <Button text="Login" variant="primary" loading={true} />
-        </div>
+          <div className="flex   justify-end gap-2 mt-4">
+            <Button type="reset" text="Clear" variant="secondary" />
+            <Button
+              type="submit"
+              text="Login"
+              variant="primary"
+              loading={loading}
+            />
+          </div>
+        </form>
         <p className="text-sm text-gray-600 text-center mt-4">
           Don't have an account?{" "}
           <a href="#" className="text-indigo-600 hover:underline">

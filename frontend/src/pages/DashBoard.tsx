@@ -6,9 +6,18 @@ import { PlusIcon } from "../icons/PlusIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { useOnClickOutside } from "usehooks-ts";
 import { Sidebar } from "../components/ui/Sidebar";
+import { useContent } from "@/hooks/useContents";
+
+interface contentType {
+  _id: string;
+  link: string;
+  type: "Youtube" | "Tweet";
+  title: string;
+}
 
 function DashBoard() {
   const ref = useRef(null);
+  const contents = useContent();
   const [modalOpen, setModalOpen] = useState(false);
 
   const Openmodal = () => {
@@ -33,7 +42,7 @@ function DashBoard() {
             setModalOpen(false);
           }}
         />
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-4">
           <Button
             variant="secondary"
             text="Share brain"
@@ -48,24 +57,10 @@ function DashBoard() {
           ></Button>
         </div>
 
-        <div className="flex gap-4">
-          <Card
-            title="This is sample post "
-            link="https://www.youtube.com/watch?v=gUdZyHiKfvU"
-            type="Youtube"
-          />
-
-          <Card
-            title="This is sample post "
-            link="https://www.youtube.com/watch?v=gUdZyHiKfvU"
-            type="Youtube"
-          />
-
-          <Card
-            title="This is sample post "
-            link="https://twitter.com/ajaypatel745/status/1865510353112596833"
-            type="Tweet"
-          />
+        <div className="flex gap-4 mt-10">
+          {contents.map((data: contentType) => (
+            <Card title={data.title} link={data.link} type={data.type} />
+          ))}
         </div>
       </div>
     </div>

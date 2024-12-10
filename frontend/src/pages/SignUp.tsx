@@ -2,19 +2,39 @@ import { FC, useState } from "react";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-
-type Inputs = {
-  Username: string;
-  Password: string;
-};
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../api/user";
+import { userDataTypes } from "../types/user";
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 export const SignUp: FC = () => {
+  const navigate = useNavigate();
+
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const { register, handleSubmit } = useForm<userDataTypes>();
+  const onSubmit: SubmitHandler<userDataTypes> = async (data) => {
     setLoading(true);
-    console.log(data);
+
+    try {
+      const response = await registerUser(data);
+      console.log(response.status);
+      if (response.status != 201) {
+        throw new Error("User registration failed: " + response.statusText);
+      }
+
+      toast({
+        variant: "success",
+        title: "User has been registered successfully",
+      });
+
+      setTimeout(() => {
+        navigate("/signin");
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="h-screen w-screen bg-gray-200 flex justify-center items-center  ">
@@ -23,16 +43,18 @@ export const SignUp: FC = () => {
           Sign Up
         </h1>
 
+        <Toaster />
+
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Input type="text" placeholder="Username" {...register("Username")} />
+          <Input type="text" placeholder="Username" {...register("username")} />
           <Input
             type="password"
             placeholder="Password"
-            {...register("Password")}
+            {...register("password")}
           />
 
           <div className="flex   justify-end gap-2 mt-4">
-            <Button text="Clear" variant="secondary" />
+            <Button type="reset" text="Clear" variant="secondary" />
             <Button
               type="submit"
               text="Signup"
