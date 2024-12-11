@@ -57,9 +57,14 @@ function DashBoard() {
           ></Button>
         </div>
 
-        <div className="flex gap-4 mt-10">
+        <div className="flex gap-4 mt-10 flex-wrap">
           {contents.map((data: contentType) => (
-            <Card title={data.title} link={data.link} type={data.type} />
+            <Card
+              key={data._id}
+              title={data.title}
+              link={data.link}
+              type={data.type}
+            />
           ))}
         </div>
       </div>

@@ -1,9 +1,10 @@
+import { LinkType } from "@/types/link";
 import { ShareIcon } from "../../icons/ShareIcon";
 
 interface cardProps {
   title: string;
   link: string;
-  type: "Youtube" | "Tweet";
+  type: LinkType;
 }
 
 export const Card = ({ title, link, type }: cardProps) => {
