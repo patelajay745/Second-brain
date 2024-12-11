@@ -1,36 +1,41 @@
 import { LinkType } from "@/types/link";
 import { ShareIcon } from "../../icons/ShareIcon";
+import { DeleteIcon } from "@/icons/DeleteIcon";
+import { YoutubeIcon } from "@/icons/YoutubeIcon";
+import { TwitterIcon } from "@/icons/TwitterIcon";
 
 interface cardProps {
   title: string;
   link: string;
   type: LinkType;
+  onclick: () => void;
 }
 
-export const Card = ({ title, link, type }: cardProps) => {
+export const Card = ({ title, link, type, onclick }: cardProps) => {
   return (
-    <div className="bg-white rounded-md  text-black min-w-96 p-8 border-gray-200 border h-auto shadow-2xl">
-      <div className="flex justify-between ">
-        <div className="flex items-center text-md ">
+    <div className="bg-white rounded-md text-black w-96 p-8 border-gray-200 border shadow-2xl self-start ">
+      <div className="flex justify-between">
+        <div className="flex items-center text-md font-semibold">
           <div className="text-gray-500 pr-2">
-            <ShareIcon />
+            {type === "Youtube" ? <YoutubeIcon /> : <TwitterIcon />}
           </div>
           {title}
         </div>
-        <div className="flex ">
-          <div className="pr-2 text-gray-500">
+        <div className="flex">
+          <div className="pr-4 text-gray-500">
             <ShareIcon />
           </div>
           <div className="pr-2 text-gray-500">
-            <ShareIcon />
+            <button onClick={onclick}>
+              <DeleteIcon />
+            </button>
           </div>
         </div>
       </div>
-
       <div className="pt-4">
         {type === "Youtube" ? (
           <iframe
-            className="w-full"
+            className="w-full aspect-video"
             src={link.replace("watch", "embed").replace("?v=", "/")}
             title="YouTube video player"
             frameBorder="0"

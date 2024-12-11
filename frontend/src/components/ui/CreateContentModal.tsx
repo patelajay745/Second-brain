@@ -89,6 +89,7 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
               </div>
 
               <div className="space-y-4">
+                <h2 className="text-lg font-semibold text-center mb-4">Add New Memory</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="space-y-3">
                     <Input

@@ -8,3 +8,7 @@ export const createContent = (data: ContentInputType) => {
 export const getAllContent = () => {
   return api.get("api/v1/content");
 };
+
+export const deleteAContent = (id: string) => {
+  return api.delete(`api/v1/content/${id}`);
+};

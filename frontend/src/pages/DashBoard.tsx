@@ -6,8 +6,8 @@ import { PlusIcon } from "../icons/PlusIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { useOnClickOutside } from "usehooks-ts";
 import { Sidebar } from "../components/ui/Sidebar";
-import { useQuery } from "@tanstack/react-query";
-import { getAllContent } from "@/api/content";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteAContent, getAllContent } from "@/api/content";
 
 interface contentType {
   _id: string;
@@ -18,6 +18,7 @@ interface contentType {
 
 function DashBoard() {
   const ref = useRef(null);
+  const queryClient = useQueryClient();
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -38,6 +39,17 @@ function DashBoard() {
       return response.data.data;
     },
   });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteAContent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["contents"] });
+    },
+  });
+
+  const deleteContent = (id: string) => {
+    mutate(id);
+  };
 
   return (
     <div className="flex">
@@ -76,6 +88,7 @@ function DashBoard() {
                 title={data.title}
                 link={data.link}
                 type={data.type}
+                onclick={() => deleteContent(data._id)}
               />
             ))
           )}
