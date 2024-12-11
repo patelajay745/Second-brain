@@ -6,7 +6,8 @@ import { PlusIcon } from "../icons/PlusIcon";
 import { ShareIcon } from "../icons/ShareIcon";
 import { useOnClickOutside } from "usehooks-ts";
 import { Sidebar } from "../components/ui/Sidebar";
-import { useContent } from "@/hooks/useContents";
+import { useQuery } from "@tanstack/react-query";
+import { getAllContent } from "@/api/content";
 
 interface contentType {
   _id: string;
@@ -17,7 +18,7 @@ interface contentType {
 
 function DashBoard() {
   const ref = useRef(null);
-  const contents = useContent();
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const Openmodal = () => {
@@ -29,6 +30,14 @@ function DashBoard() {
   };
 
   useOnClickOutside(ref, handleClickOutside);
+
+  const { data: contents, isLoading } = useQuery({
+    queryKey: ["contents"],
+    queryFn: async () => {
+      const response = await getAllContent();
+      return response.data.data;
+    },
+  });
 
   return (
     <div className="flex">
@@ -58,14 +67,18 @@ function DashBoard() {
         </div>
 
         <div className="flex gap-4 mt-10 flex-wrap">
-          {contents.map((data: contentType) => (
-            <Card
-              key={data._id}
-              title={data.title}
-              link={data.link}
-              type={data.type}
-            />
-          ))}
+          {isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            contents?.map((data: contentType) => (
+              <Card
+                key={data._id}
+                title={data.title}
+                link={data.link}
+                type={data.type}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

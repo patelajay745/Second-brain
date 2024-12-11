@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const contentTypes = ["image", "video", "article", "audio", "link"];
+const contentTypes = ["Tweet", "Youtube"];
 
 const contentSchema = new Schema(
   {

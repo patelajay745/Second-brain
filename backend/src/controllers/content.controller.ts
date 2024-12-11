@@ -13,17 +13,30 @@ interface ITag {
 export const createContent = asyncHandler(async (req, res) => {
   const { type, link, title, tags: rawTags } = req.body;
 
+  console.log(req.body);
+
   if (
-    [type, link, title, rawTags].some((field) => !field || field.trim() === "")
+    [type, link, title, rawTags].some(
+      (field) => !field || (typeof field === "string" && field.trim() === "")
+    )
   ) {
     throw new ApiError(401, "Please provide all required fields");
   }
 
   let tags: string[];
 
-  tags = JSON.parse(rawTags);
-  if (!Array.isArray(tags)) {
-    throw new ApiError(400, "Tags must be an array");
+  console.log(rawTags);
+
+  if (Array.isArray(rawTags)) {
+    tags = rawTags;
+  } else if (typeof rawTags === "string") {
+    try {
+      tags = JSON.parse(rawTags);
+    } catch (error) {
+      throw new ApiError(400, "Invalid tags format");
+    }
+  } else {
+    throw new ApiError(400, "Tags must be an array or valid JSON string");
   }
 
   const tagDocuments = await Promise.all(

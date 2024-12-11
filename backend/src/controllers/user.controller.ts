@@ -39,6 +39,7 @@ const UserSchemaForZod = z.object({
 });
 
 export const registerUser = asyncHandler(async (req, res) => {
+  console.log(req.body);
   const zodOutput:
     | { success: true; data: unknown }
     | { success: false; error: ZodError } = UserSchemaForZod.safeParse(

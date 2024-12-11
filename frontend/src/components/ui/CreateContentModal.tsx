@@ -4,9 +4,10 @@ import { Button } from "./Button";
 import { Input } from "./Input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ContentInputType } from "@/types/content";
-import { api } from "@/api";
 import { createContent } from "@/api/content";
-import { error } from "console";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Toaster } from "./toaster";
+import { useToast } from "@/hooks/use-toast";
 
 interface props {
   open: boolean;
@@ -15,30 +16,33 @@ interface props {
 
 export const CreateContentModal = forwardRef<HTMLDivElement, props>(
   ({ open, onClose }: props, ref) => {
+    const queryClient = useQueryClient();
     const { register, handleSubmit, setValue, reset } =
       useForm<ContentInputType>();
     const [currentTag, setCurrentTag] = useState("");
     const [tags, setTags] = useState<string[]>([]);
-    const [loading, setLoading] = useState(false);
+    const { toast } = useToast();
+
+    const { mutate, isPending } = useMutation({
+      mutationFn: createContent,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["contents"] });
+        setTags([]);
+        reset();
+        onClose();
+
+        toast({
+          variant: "success",
+          title: "Link is memorized",
+        });
+      },
+      onError: (error) => {
+        console.error("Error creating content:", error);
+      },
+    });
 
     const onSubmit: SubmitHandler<ContentInputType> = async (data) => {
-      console.log(data);
-      setLoading(true);
-      try {
-        const response = await createContent(data);
-        console.log(response);
-
-        if (response.status != 201) {
-          throw new Error("User registration failed: " + response.statusText);
-        }
-
-         onClose();
-      } catch (error) {
-        console.log(error);
-      }
-
-      setTags([]);
-      reset();
+      mutate(data);
     };
 
     setValue("tags", tags);
@@ -65,6 +69,7 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
       <div>
         {open && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
+            <Toaster />
             <div
               className="fixed inset-0 bg-black bg-opacity-60"
               onClick={onClose}
@@ -141,7 +146,7 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
 
                   <div className="flex w-full mt-6">
                     <Button
-                      loading={loading}
+                      loading={isPending}
                       type="submit"
                       variant="primary"
                       text="Submit"
