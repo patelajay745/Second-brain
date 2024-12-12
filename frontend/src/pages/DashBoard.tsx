@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import { CreateContentModal } from "../components/ui/CreateContentModal";
@@ -8,6 +8,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import { Sidebar } from "../components/ui/Sidebar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteAContent, getAllContent } from "@/api/content";
+import { useFilter } from "@/hooks/useFilter";
 
 interface contentType {
   _id: string;
@@ -19,6 +20,7 @@ interface contentType {
 
 function DashBoard() {
   const ref = useRef(null);
+  const { filter, setFilter } = useFilter();
   const queryClient = useQueryClient();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,7 +43,15 @@ function DashBoard() {
     },
   });
 
-  const { mutate, isPending } = useMutation({
+  const filteredContents = useMemo(() => {
+    
+    if (!contents) return [];
+    if (filter === "All") return contents;
+   
+    return contents.filter((content: contentType) => content.type === filter);
+  }, [contents, filter]);
+
+  const { mutate } = useMutation({
     mutationFn: deleteAContent,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contents"] });
@@ -54,7 +64,7 @@ function DashBoard() {
 
   return (
     <div className="flex">
-      <Sidebar />
+      <Sidebar onFilterChange={setFilter} />
 
       <div className="p-8 bg-gray-100 flex-1">
         <CreateContentModal
@@ -83,7 +93,7 @@ function DashBoard() {
           {isLoading ? (
             <div>Loading...</div>
           ) : (
-            contents?.map((data: contentType) => (
+            filteredContents?.map((data: contentType) => (
               <Card
                 key={data._id}
                 title={data.title}
