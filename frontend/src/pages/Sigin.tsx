@@ -19,7 +19,7 @@ export const SignIn: FC = () => {
       if (response.status != 200) {
         throw new Error("User registration failed: " + response.statusText);
       }
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }

@@ -9,6 +9,8 @@ import { Sidebar } from "../components/ui/Sidebar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteAContent, getAllContent } from "@/api/content";
 import { useFilter } from "@/hooks/useFilter";
+import { toast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 interface contentType {
   _id: string;
@@ -44,10 +46,9 @@ function DashBoard() {
   });
 
   const filteredContents = useMemo(() => {
-    
     if (!contents) return [];
     if (filter === "All") return contents;
-   
+
     return contents.filter((content: contentType) => content.type === filter);
   }, [contents, filter]);
 
@@ -62,11 +63,20 @@ function DashBoard() {
     mutate(id);
   };
 
+  const shareContent = (link: string) => {
+    navigator.clipboard.writeText(link);
+    toast({
+      variant: "success",
+      title: "Link is copied to clipboard",
+    });
+  };
+
   return (
     <div className="flex">
       <Sidebar onFilterChange={setFilter} />
+      <Toaster />
 
-      <div className="p-8 bg-gray-100 flex-1">
+      <div className="p-8 bg-gray-100 ml-72 flex-1">
         <CreateContentModal
           ref={ref}
           open={modalOpen}
@@ -100,7 +110,8 @@ function DashBoard() {
                 link={data.link}
                 type={data.type}
                 tags={data.tags}
-                onclick={() => deleteContent(data._id)}
+                onShare={() => shareContent(data.link)}
+                onDelete={() => deleteContent(data._id)}
               />
             ))
           )}

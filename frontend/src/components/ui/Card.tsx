@@ -11,10 +11,18 @@ interface cardProps {
   link: string;
   type: LinkType;
   tags: string[];
-  onclick: () => void;
+  onShare: () => void;
+  onDelete: () => void;
 }
 
-export const Card = ({ title, link, type, onclick, tags }: cardProps) => {
+export const Card = ({
+  title,
+  link,
+  type,
+  onShare,
+  tags,
+  onDelete,
+}: cardProps) => {
   return (
     <div className="bg-white rounded-md text-black w-96 p-8 border-gray-200 border shadow-2xl self-start ">
       <div className="flex justify-between">
@@ -25,11 +33,11 @@ export const Card = ({ title, link, type, onclick, tags }: cardProps) => {
           {title}
         </div>
         <div className="flex">
-          <div className="pr-4 text-gray-500">
+          <div onClick={onShare} className="pr-4 text-gray-500">
             <ShareIcon />
           </div>
           <div className="pr-2 text-gray-500">
-            <button onClick={onclick}>
+            <button onClick={onDelete}>
               <DeleteIcon />
             </button>
           </div>

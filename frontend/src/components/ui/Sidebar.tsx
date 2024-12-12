@@ -3,12 +3,18 @@ import { Logo } from "../../icons/Logo";
 import { TwitterIcon } from "../../icons/TwitterIcon";
 import { YoutubeIcon } from "../../icons/YoutubeIcon";
 import { SidebarItem } from "./SidebarItem";
+import { LogoutIcon } from "@/icons/LogOutIcon";
+
+import Cookies from "js-cookie";
+import { logoutUser } from "@/api/user";
+import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
   onFilterChange: (filter: string) => void;
 }
 
 export function Sidebar({ onFilterChange }: SidebarProps) {
+  const navigate = useNavigate();
   const onclickTwitter = () => {
     onFilterChange("Tweet");
   };
@@ -20,9 +26,23 @@ export function Sidebar({ onFilterChange }: SidebarProps) {
   const onclickAll = () => {
     onFilterChange("All");
   };
+
+  const logout = async () => {
+    try {
+      const response = await logoutUser();
+
+      if (response.status != 200) {
+        throw new Error("User Logout: " + response.statusText);
+      }
+
+      navigate("/signin");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <div className="h-screen bg-white  border-r-2 w-72 position-fixed left-0 top-0 pl-6 ">
-      <div className="flex text-2xl pt-4 items-center">
+    <div className=" fixed top-0 left-0 h-screen w-72 overflow-y-auto bg-white z-[1000] shadow-lg ">
+      <div className="flex text-2xl pt-4 items-center pl-6">
         <div className="pr-4 text-purple-600">
           <Logo />
         </div>
@@ -41,6 +61,10 @@ export function Sidebar({ onFilterChange }: SidebarProps) {
           text="Youtube"
           icon={<YoutubeIcon />}
         />
+      </div>
+
+      <div className="absolute bottom-0 w-full p-4">
+        <SidebarItem onClick={logout} text="Logout" icon={<LogoutIcon />} />
       </div>
     </div>
   );

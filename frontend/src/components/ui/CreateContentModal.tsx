@@ -31,10 +31,7 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
         reset();
         onClose();
 
-        toast({
-          variant: "success",
-          title: "Link is memorized",
-        });
+       
       },
       onError: (error) => {
         console.error("Error creating content:", error);
