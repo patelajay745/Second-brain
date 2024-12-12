@@ -14,6 +14,7 @@ interface contentType {
   link: string;
   type: "Youtube" | "Tweet";
   title: string;
+  tags: string[];
 }
 
 function DashBoard() {
@@ -88,6 +89,7 @@ function DashBoard() {
                 title={data.title}
                 link={data.link}
                 type={data.type}
+                tags={data.tags}
                 onclick={() => deleteContent(data._id)}
               />
             ))
