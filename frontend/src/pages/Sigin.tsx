@@ -4,7 +4,7 @@ import { Button } from "../components/ui/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { userDataTypes } from "@/types/user";
 import { loginUser } from "@/api/user";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const SignIn: FC = () => {
   const { register, handleSubmit } = useForm<userDataTypes>();
@@ -50,10 +50,10 @@ export const SignIn: FC = () => {
           </div>
         </form>
         <p className="text-sm text-gray-600 text-center mt-4">
-          Don't have an account?{" "}
-          <a href="#" className="text-indigo-600 hover:underline">
-            Signup
-          </a>
+          Don't have an account?
+          <Link to="/signup">
+            <span className="text-indigo-600 hover:underline">Signup</span>
+          </Link>
         </p>
       </div>
     </div>

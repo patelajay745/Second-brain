@@ -64,7 +64,10 @@ export const SignUp: FC = () => {
           </div>
         </form>
         <p className="text-sm text-gray-600 text-center mt-4">
-          Already have an account? <Link to="/signin">Login</Link>
+          Already have an account?{" "}
+          <Link to="/signin">
+            <span className="text-indigo-600 hover:underline">Login</span>
+          </Link>
         </p>
       </div>
     </div>
