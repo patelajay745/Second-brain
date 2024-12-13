@@ -8,14 +8,13 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   const { isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  if (isLoading) return <div>Loading....</div>;
-
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
-      console.log("redirecting bcoz of not authenticated");
       navigate("/signin");
     }
   }, [isAuthenticated, isLoading, navigate]);
+
+  if (isLoading) return <div>Loading....</div>;
 
   if (!isAuthenticated) return null;
 

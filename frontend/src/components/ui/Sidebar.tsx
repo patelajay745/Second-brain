@@ -4,16 +4,15 @@ import { TwitterIcon } from "../../icons/TwitterIcon";
 import { YoutubeIcon } from "../../icons/YoutubeIcon";
 import { SidebarItem } from "./SidebarItem";
 import { LogoutIcon } from "@/icons/LogOutIcon";
-
-import Cookies from "js-cookie";
 import { logoutUser } from "@/api/user";
 import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
   onFilterChange: (filter: string) => void;
+  logoutButton?: boolean;
 }
 
-export function Sidebar({ onFilterChange }: SidebarProps) {
+export function Sidebar({ onFilterChange, logoutButton = true }: SidebarProps) {
   const navigate = useNavigate();
   const onclickTwitter = () => {
     onFilterChange("Tweet");
@@ -63,9 +62,11 @@ export function Sidebar({ onFilterChange }: SidebarProps) {
         />
       </div>
 
-      <div className="absolute bottom-0 w-full p-4">
-        <SidebarItem onClick={logout} text="Logout" icon={<LogoutIcon />} />
-      </div>
+      {logoutButton && (
+        <div className="absolute bottom-0 w-full p-4">
+          <SidebarItem onClick={logout} text="Logout" icon={<LogoutIcon />} />
+        </div>
+      )}
     </div>
   );
 }

@@ -15,11 +15,10 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const checkAuth = async () => {
     setIsLoading(true);
-    console.log("auth user api hits");
     try {
       const response = await getauthenticated();
 

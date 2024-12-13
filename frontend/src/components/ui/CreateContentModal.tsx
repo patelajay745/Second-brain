@@ -7,7 +7,6 @@ import { ContentInputType } from "@/types/content";
 import { createContent } from "@/api/content";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Toaster } from "./toaster";
-import { useToast } from "@/hooks/use-toast";
 
 interface props {
   open: boolean;
@@ -21,7 +20,6 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
       useForm<ContentInputType>();
     const [currentTag, setCurrentTag] = useState("");
     const [tags, setTags] = useState<string[]>([]);
-    const { toast } = useToast();
 
     const { mutate, isPending } = useMutation({
       mutationFn: createContent,
@@ -30,8 +28,6 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
         setTags([]);
         reset();
         onClose();
-
-       
       },
       onError: (error) => {
         console.error("Error creating content:", error);
@@ -66,7 +62,6 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
       <div>
         {open && (
           <div className="fixed inset-0 flex items-center justify-center z-50">
-            <Toaster />
             <div
               className="fixed inset-0 bg-black bg-opacity-60"
               onClick={onClose}
@@ -86,7 +81,9 @@ export const CreateContentModal = forwardRef<HTMLDivElement, props>(
               </div>
 
               <div className="space-y-4">
-                <h2 className="text-lg font-semibold text-center mb-4">Add New Memory</h2>
+                <h2 className="text-lg font-semibold text-center mb-4">
+                  Add New Memory
+                </h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="space-y-3">
                     <Input

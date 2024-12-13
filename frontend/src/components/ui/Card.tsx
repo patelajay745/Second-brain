@@ -12,7 +12,8 @@ interface cardProps {
   type: LinkType;
   tags: string[];
   onShare: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
+  showDelete?: boolean;
 }
 
 export const Card = ({
@@ -22,6 +23,7 @@ export const Card = ({
   onShare,
   tags,
   onDelete,
+  showDelete = true,
 }: cardProps) => {
   return (
     <div className="bg-white rounded-md text-black w-96 p-8 border-gray-200 border shadow-2xl self-start ">
@@ -36,11 +38,13 @@ export const Card = ({
           <div onClick={onShare} className="pr-4 text-gray-500">
             <ShareIcon />
           </div>
-          <div className="pr-2 text-gray-500">
-            <button onClick={onDelete}>
-              <DeleteIcon />
-            </button>
-          </div>
+          {showDelete && (
+            <div className="pr-2 text-gray-500">
+              <button onClick={onDelete}>
+                <DeleteIcon />
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="pt-4">

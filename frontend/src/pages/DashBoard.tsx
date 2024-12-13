@@ -4,13 +4,13 @@ import { Card } from "../components/ui/Card";
 import { CreateContentModal } from "../components/ui/CreateContentModal";
 import { PlusIcon } from "../icons/PlusIcon";
 import { ShareIcon } from "../icons/ShareIcon";
-import { useOnClickOutside } from "usehooks-ts";
 import { Sidebar } from "../components/ui/Sidebar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteAContent, getAllContent } from "@/api/content";
 import { useFilter } from "@/hooks/useFilter";
 import { toast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { ShareContentModal } from "@/components/ui/ShareContentModal";
 
 interface contentType {
   _id: string;
@@ -25,17 +25,16 @@ function DashBoard() {
   const { filter, setFilter } = useFilter();
   const queryClient = useQueryClient();
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
-  const Openmodal = () => {
-    setModalOpen(true);
+  const OpenCreateModal = () => {
+    setCreateModalOpen(true);
   };
 
-  const handleClickOutside = () => {
-    setModalOpen(false);
+  const OpenShareModal = () => {
+    setShareModalOpen(true);
   };
-
-  useOnClickOutside(ref, handleClickOutside);
 
   const { data: contents, isLoading } = useQuery({
     queryKey: ["contents"],
@@ -76,25 +75,32 @@ function DashBoard() {
       <Sidebar onFilterChange={setFilter} />
       <Toaster />
 
-      <div className="p-8 bg-gray-100 ml-72 flex-1">
+      <div className="p-8 bg-gray-100 ml-72 flex-1 min-h-screen">
         <CreateContentModal
           ref={ref}
-          open={modalOpen}
+          open={createModalOpen}
           onClose={() => {
-            setModalOpen(false);
+            setCreateModalOpen(false);
           }}
         />
+
+        <ShareContentModal
+          onClose={() => setShareModalOpen(false)}
+          open={shareModalOpen}
+        />
+
         <div className="flex justify-end gap-4">
           <Button
             variant="secondary"
             text="Share brain"
+            onclick={OpenShareModal}
             startIcon={<ShareIcon />}
           ></Button>
 
           <Button
             variant="primary"
             text="Add Content"
-            onclick={Openmodal}
+            onclick={OpenCreateModal}
             startIcon={<PlusIcon />}
           ></Button>
         </div>
