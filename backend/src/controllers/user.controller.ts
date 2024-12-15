@@ -125,3 +125,14 @@ export const getLogin = asyncHandler(async (req, res) => {
       })
     );
 });
+
+export const logoutUser = asyncHandler(async (req, res) => {
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .json(new ApiResponse(200, "user logged out", {}));
+});

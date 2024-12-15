@@ -40,5 +40,7 @@ export const verifyJWT = async (
 
     req.user = user;
     next();
-  } catch (error) {}
+  } catch (error) {
+    res.status(403).json({ message: "Unauthorized request" });
+  }
 };

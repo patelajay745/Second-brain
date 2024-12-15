@@ -28,9 +28,11 @@ app.use(cookieparse());
 import userRouter from "@/routes/user.route";
 import contentRouter from "@/routes/content.route";
 import brainRoute from "@/routes/brain.route";
+import authRouter from "@/routes/auth.route";
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/content", contentRouter);
 app.use("/api/v1/brain", brainRoute);
+app.use("/api/v1/auth", authRouter);
 
 export { app };
