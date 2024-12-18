@@ -4,10 +4,12 @@ import { connectDB } from "./db";
 
 dotenv.config({ path: "./.env" });
 
+const port = process.env.PORT || 8080;
+
 connectDB()
   .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log(`Server ready on port ${process.env.PORT}`);
+    app.listen(port, () => {
+      console.log(`Server ready on port ${port}`);
     });
   })
   .catch();
