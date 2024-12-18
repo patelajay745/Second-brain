@@ -44,11 +44,16 @@ jobs:
 
       - name: Configure Docker
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
-      - name: list items
-        run: gcloud container images list --repository=gcr.io/second-brain
+      - name: Build
+        env:
+          IMAGE_NAME: backend
+          PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+        run: |-
+          docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/${{ vars.GCR_REPO_NAME }}/$IMAGE_NAME:latest -f backend/Dockerfile backend/.
+          docker push us-central1-docker.pkg.dev/$PROJECT_ID/${{ vars.GCR_REPO_NAME }}/$IMAGE_NAME:latest
 
   deploy:
-    needs: Build-and-push
+    needs: build-and-push
     runs-on: ubuntu-latest
     environment: prod
     steps:
