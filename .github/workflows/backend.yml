@@ -38,7 +38,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy second-brain-backend \
-              --image us-central1-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.GCR_REPO_NAME }}/backend:latest
+              --image us-central1-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/${{ vars.GCR_REPO_NAME }}/backend:latest \
               --platform managed \
               --port=8080 \
               --region us-central1 \
