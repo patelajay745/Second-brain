@@ -4,7 +4,7 @@ import { connectDB } from "./db";
 
 dotenv.config({ path: "./.env" });
 
-const port = process.env.PORT || 8080;
+const port = 8080;
 
 connectDB()
   .then(() => {
@@ -15,5 +15,3 @@ connectDB()
   .catch();
 
 export default app;
-
-
