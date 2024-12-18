@@ -32,6 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
       - name: Build
         env:
           IMAGE_NAME: second-brain-backend
