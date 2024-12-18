@@ -39,7 +39,7 @@ jobs:
           IMAGE_NAME: second-brain-backend
           PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
         run: |-
-          docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/${{ vars.GCR_REPO_NAME }}/$IMAGE_NAME:latest -f backend/Dockerfile .
+          docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/${{ vars.GCR_REPO_NAME }}/$IMAGE_NAME:latest -f backend/Dockerfile backend/.
           docker push us-central1-docker.pkg.dev/$PROJECT_ID/${{ vars.GCR_REPO_NAME }}/$IMAGE_NAME:latest
 
   deploy:
