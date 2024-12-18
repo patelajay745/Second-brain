@@ -43,4 +43,3 @@ jobs:
               --port=8080 \
               --region us-central1 \
               --allow-unauthenticated \
-              --timeout=2m
