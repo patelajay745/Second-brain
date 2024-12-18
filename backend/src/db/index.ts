@@ -3,7 +3,7 @@ import { DB_NAME } from "../constants";
 
 export const connectDB = async () => {
   try {
-    const URL = `${process.env.MONGODB_URI}${DB_NAME}`;
+    const URL = `${process.env.MONGODB_URI}`;
 
     console.log("URl", URL);
 
