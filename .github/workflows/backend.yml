@@ -42,5 +42,5 @@ jobs:
               --platform managed \
               --port=8080 \
               --region us-central1 \
-              --allow-unauthenticated \
-              --set-env-vars PORT=8080
+              --allow-unauthenticated 
+              
