@@ -43,3 +43,4 @@ jobs:
               --port=8080 \
               --region us-central1 \
               --allow-unauthenticated \
+              --set-env-vars MONGODB_URI=${{ secrets.MONGODB_URI }}
