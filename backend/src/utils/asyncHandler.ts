@@ -1,4 +1,4 @@
-import { CustomRequest } from "@/types/customRequest";
+import { CustomRequest } from "../types/customRequest";
 import { Request, Response, NextFunction } from "express";
 
 type AsyncRequestHandler = (

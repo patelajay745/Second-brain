@@ -6,7 +6,7 @@ import {
   getAContent,
   deleteAContent,
 } from "../controllers/content.controller";
-import { verifyJWT } from "@/middlewares/auth.middleware";
+import { verifyJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
 

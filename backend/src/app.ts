@@ -25,10 +25,10 @@ app.use(express.static("public"));
 app.use(cookieparse());
 
 //routes
-import userRouter from "@/routes/user.route";
-import contentRouter from "@/routes/content.route";
-import brainRoute from "@/routes/brain.route";
-import authRouter from "@/routes/auth.route";
+import userRouter from "./routes/user.route";
+import contentRouter from "./routes/content.route";
+import brainRoute from "./routes/brain.route";
+import authRouter from "./routes/auth.route";
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/content", contentRouter);

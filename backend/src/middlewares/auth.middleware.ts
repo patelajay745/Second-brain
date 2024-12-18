@@ -1,8 +1,7 @@
-import { ApiError } from "@/utils/ApiError";
+import { ApiError } from "../utils/ApiError";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { User } from "@/models/users.models";
-import { asyncHandler } from "@/utils/asyncHandler";
-import { CustomRequest } from "@/types/customRequest";
+import { User } from "../models/users.models";
+import { CustomRequest } from "../types/customRequest";
 import { NextFunction, Response } from "express";
 
 interface IDecodedToken extends JwtPayload {

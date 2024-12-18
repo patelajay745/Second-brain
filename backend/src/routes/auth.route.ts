@@ -1,5 +1,5 @@
-import { authcheck } from "@/controllers/authcheck.controller";
-import { verifyJWT } from "@/middlewares/auth.middleware";
+import { authcheck } from "../controllers/authcheck.controller";
+import { verifyJWT } from "../middlewares/auth.middleware";
 import { Router } from "express";
 
 const authRouter = Router();

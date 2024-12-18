@@ -2,8 +2,8 @@ import { Router } from "express";
 import {
   toggleShareBrain,
   getShatedLinkData,
-} from "@/controllers/brain.controller";
-import { verifyJWT } from "@/middlewares/auth.middleware";
+} from "../controllers/brain.controller";
+import { verifyJWT } from "../middlewares/auth.middleware";
 
 const router = Router();
 
