@@ -43,4 +43,4 @@ jobs:
               --port=8080 \
               --region us-central1 \
               --allow-unauthenticated \
-              --set-env-vars MONGODB_URI=${{ secrets.MONGODB_URI }},ACCESS_TOKEN_EXPIRY="1d",ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
+              --set-env-vars MONGODB_URI=${{ secrets.MONGODB_URI }},ACCESS_TOKEN_EXPIRY=1d,ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
