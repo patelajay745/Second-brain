@@ -25,9 +25,9 @@ jobs:
         uses: "google-github-actions/setup-gcloud@v2"
 
       - name: Configure Docker
-        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+        run: gcloud artifacts repositories list --project=${{ vars.GCP_PROJECT_ID }}
 
-  Build-and-push:
+  build-and-push:
     needs: setup
     runs-on: ubuntu-latest
     environment: prod
@@ -45,7 +45,7 @@ jobs:
       - name: Configure Docker
         run: gcloud auth configure-docker us-central1-docker.pkg.dev
       - name: list items
-        run: gcloud container images list
+        run: gcloud container images list --repository=gcr.io/second-brain
 
   deploy:
     needs: Build-and-push
