@@ -13,5 +13,3 @@ connectDB()
   .catch();
 
 export default app;
-
-// #test
