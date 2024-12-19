@@ -6,7 +6,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { ContentInputType } from "@/types/content";
 import { createContent } from "@/api/content";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Toaster } from "./toaster";
 
 interface props {
   open: boolean;
