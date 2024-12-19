@@ -5,23 +5,27 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { userDataTypes } from "@/types/user";
 import { loginUser } from "@/api/user";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 export const SignIn: FC = () => {
   const { register, handleSubmit } = useForm<userDataTypes>();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const onSubmit: SubmitHandler<userDataTypes> = async (data) => {
     setLoading(true);
 
-    console.log(data);
     try {
       const response = await loginUser(data);
-      console.log("login request response", response);
+
       if (response.status != 200) {
         throw new Error("User registration failed: " + response.statusText);
       }
-      navigate("/");
+
+      await login();
+
+      navigate("/", { replace: true });
     } catch (error) {
       console.log(error);
       setLoading(false);

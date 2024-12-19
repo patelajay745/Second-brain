@@ -29,7 +29,6 @@ userSchema.methods.isPasswordCorrect = async function (password: string) {
 };
 
 userSchema.methods.generateAccessToken = function () {
-  console.log("Access Token", process.env.ACCESS_TOKEN_SECRET);
   if (!process.env.ACCESS_TOKEN_SECRET) {
     throw new Error(
       "ACCESS_TOKEN_SECRET is not defined in environment variables"

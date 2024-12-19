@@ -5,13 +5,11 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   checkAuth: () => void;
+  login: () => void;
+  logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType>({
-  isAuthenticated: false,
-  isLoading: true,
-  checkAuth: async () => {},
-});
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -39,8 +37,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     checkAuth();
   }, []);
 
+  const login = async () => {
+    setIsAuthenticated(true);
+  };
+
+  const logout = async () => {
+    setIsAuthenticated(false);
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, checkAuth }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, isLoading, checkAuth, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

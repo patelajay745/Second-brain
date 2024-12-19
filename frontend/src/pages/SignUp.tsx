@@ -19,7 +19,7 @@ export const SignUp: FC = () => {
 
     try {
       const response = await registerUser(data);
-      console.log(response.status);
+
       if (response.status != 201) {
         throw new Error("User registration failed: " + response.statusText);
       }

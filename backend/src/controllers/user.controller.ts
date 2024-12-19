@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 import { User } from "../models/users.models";
 import { ApiResponse } from "../utils/ApiResponse";
 import { z, ZodError } from "zod";
+import { Request } from "express";
 
 const UserSchemaForZod = z.object({
   // username: z.string().min(3).max(10),
@@ -77,7 +78,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, "User has been created", userResponse));
 });
 
-export const getLogin = asyncHandler(async (req, res) => {
+export const getLogin = asyncHandler(async (req: Request, res) => {
   const { username, password } = req.body;
 
   if ([username, password].some((field) => !field || field.trim() === "")) {
@@ -87,8 +88,6 @@ export const getLogin = asyncHandler(async (req, res) => {
   let user = await User.findOne({ username }).select(
     " -__v -createdAt -updatedAt"
   );
-
-  console.log(user);
 
   if (!user) {
     throw new ApiError(403, "user doesn't exist");
