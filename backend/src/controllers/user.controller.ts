@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 import { User } from "../models/users.models";
 import { ApiResponse } from "../utils/ApiResponse";
 import { z, ZodError } from "zod";
-import { Request } from "express";
+import { CookieOptions, Request } from "express";
 
 const UserSchemaForZod = z.object({
   // username: z.string().min(3).max(10),
@@ -109,10 +109,10 @@ export const getLogin = asyncHandler(async (req: Request, res) => {
     username: user.username,
   };
 
-  const options = {
+  const options: CookieOptions = {
     httpOnly: true,
-    secure: true,
     sameSite: "none",
+    secure: true,
   };
 
   return res
