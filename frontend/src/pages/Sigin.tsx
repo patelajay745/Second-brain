@@ -14,14 +14,17 @@ export const SignIn: FC = () => {
   const onSubmit: SubmitHandler<userDataTypes> = async (data) => {
     setLoading(true);
 
+    console.log(data);
     try {
       const response = await loginUser(data);
+      console.log("login request response", response);
       if (response.status != 200) {
         throw new Error("User registration failed: " + response.statusText);
       }
       navigate("/");
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 

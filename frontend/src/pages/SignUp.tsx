@@ -34,6 +34,7 @@ export const SignUp: FC = () => {
       }, 3000);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   return (

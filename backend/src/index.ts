@@ -1,8 +1,6 @@
+import "./config";
 import { app } from "./app";
-import dotenv from "dotenv";
 import { connectDB } from "./db";
-
-dotenv.config({ path: "./.env" });
 
 const port = 8080;
 
