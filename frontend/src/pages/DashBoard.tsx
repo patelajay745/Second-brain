@@ -40,6 +40,10 @@ function DashBoard() {
     queryKey: ["contents"],
     queryFn: async () => {
       const response = await getAllContent();
+      if (response.status != 200) {
+        console.log(response);
+        console.log(response.statusText);
+      }
       return response.data.data;
     },
   });
