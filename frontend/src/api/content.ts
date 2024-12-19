@@ -6,9 +6,7 @@ export const createContent = (data: ContentInputType) => {
 };
 
 export const getAllContent = () => {
-  return api.get("api/v1/content", {
-    withCredentials: true,
-  });
+  return api.get("api/v1/content");
 };
 
 export const deleteAContent = (id: string) => {
