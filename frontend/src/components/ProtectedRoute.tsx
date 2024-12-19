@@ -9,6 +9,7 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("backend url", import.meta.env.VITE_BACKEND_BASE_URL);
     if (!isAuthenticated && !isLoading) {
       navigate("/signin");
     }
